@@ -59,9 +59,11 @@ then rerun step 3 against it.
 | `ffprobe/ffmpeg not found` | ffmpeg isn't on PATH. |
 | 422 `video rejected` | The video is live or longer than `MAX_DURATION_SECONDS` (default 1 hour). |
 
-## Connecting the video editor (still open)
+## Connecting the video editor
 
-The editor is still unknown. Pick the pattern that fits it:
+**For a bolt.new app,** use the ready-made prompt in `BOLT_PROMPT.md`.
+
+For any other client, pick the pattern that fits it:
 
 - **The editor can call a URL and save the response:** use `POST /v1/convert`.
   The response body *is* the MP3.
