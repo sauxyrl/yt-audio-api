@@ -89,7 +89,8 @@ For any other client, pick the pattern that fits it:
 app.py                  the whole service (FastAPI + yt-dlp + ffmpeg)
 tests/test_app.py       offline tests (no network needed)
 scripts/smoke_test.sh   live YouTube end-to-end check
-Dockerfile              python:3.12-slim + ffmpeg
+Dockerfile              python:3.12-slim + ffmpeg (honors $PORT)
+render.yaml             one-click free deploy on Render (see README)
 .github/workflows/ci.yml  runs pytest on every push
 README.md               API usage
 BOLT_PROMPT.md          copy-paste prompt for integrating from bolt.new

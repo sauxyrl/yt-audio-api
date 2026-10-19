@@ -7,7 +7,26 @@ A small HTTP service that takes a YouTube URL and returns an MP3. It wraps
 > public domain. Downloading other content may violate YouTube's Terms of Service
 > and copyright law.
 
-## Run
+## Deploy free on Render (sign in with GitHub)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/sauxyrl/yt-audio-api)
+
+1. Click the button and sign in to Render with GitHub. Free accounts are fine,
+   and Render asks for permission to read this repo.
+2. Render reads `render.yaml`, which sets up a free Docker web service named
+   `yt-audio-api`. Click **Deploy Blueprint** (or **Apply**). The first build
+   takes a few minutes.
+3. When it's live, copy the URL shown at the top of the service page (e.g.
+   `https://yt-audio-api-xxxx.onrender.com`). Open `<URL>/health` in a browser
+   and check that it shows `{"ok":true,...}`.
+4. Get the API key from the service's **Environment** tab, under `API_KEY`.
+   Render generated it.
+
+Free-plan behavior: the service sleeps after 15 minutes with no requests, and
+the next request takes about a minute to wake it. Files and in-progress jobs are
+lost when it sleeps or redeploys. Every push to `main` redeploys it.
+
+## Run locally
 
 ```bash
 docker build -t yt-audio-api .

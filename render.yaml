@@ -1,0 +1,15 @@
+# Render Blueprint: one-click deploy on the free plan.
+# https://render.com/deploy?repo=https://github.com/sauxyrl/yt-audio-api
+services:
+  - type: web
+    name: yt-audio-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: API_KEY
+        generateValue: true   # Render creates a random key; copy it from the Environment tab
+      - key: WORKERS
+        value: "1"            # free plan has 512 MB RAM

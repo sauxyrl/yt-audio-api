@@ -5,6 +5,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
+ENV PORT=8000
 EXPOSE 8000
 # YouTube changes often; rebuild (or `pip install -U yt-dlp`) when downloads start failing.
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Hosts like Render inject PORT; shell form so it expands.
+CMD uvicorn app:app --host 0.0.0.0 --port $PORT

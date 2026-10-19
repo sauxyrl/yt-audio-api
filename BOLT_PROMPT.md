@@ -5,10 +5,11 @@ API key in frontend config. That's fine for a demo. Anyone who opens the app can
 see the key and use your server, so shut the server down or change `API_KEY`
 when the demo is over.
 
-Do this first: deploy this API somewhere with a public HTTPS URL, such as Render,
-Railway, or Fly.io (each can build the included `Dockerfile`), and set `API_KEY`.
-Bolt cannot host it. CORS is open to all origins by default, so the Bolt app can
-call it with no extra setup. Then paste everything inside the block below into Bolt.
+Do this first: deploy the API, because Bolt cannot host it. Use the **Deploy to
+Render** button in `README.md`. It's free and you sign in with GitHub. You'll come
+away with the two values the prompt needs: the service URL and the generated
+`API_KEY`. CORS is open to all origins by default, so the Bolt app can call it
+with no extra setup. Then paste everything inside the block below into Bolt.
 
 ```text
 Add an "Import audio from YouTube" feature to this app. The audio should end up in the app's existing audio upload flow, as if the user had picked an MP3 file themselves.
@@ -35,7 +36,7 @@ Every request needs the header `X-API-Key: <VITE_YT_AUDIO_API_KEY>`.
 
 ## What to build
 1. A text input for a YouTube URL and an "Import" button. Check that it's a youtube.com or youtu.be link before sending.
-2. On Import: POST /v1/jobs, then poll GET /v1/jobs/{id} every 3 seconds while the status is "queued" or "running". Give up after 10 minutes with a timeout message.
+2. On Import: POST /v1/jobs (the server may be asleep, so allow up to 90 seconds for this first request and show "Waking up the converter…"), then poll GET /v1/jobs/{id} every 3 seconds while the status is "queued" or "running". Give up after 10 minutes with a timeout message.
 3. When the status is "done": fetch /v1/jobs/{id}/file (with the X-API-Key header), read the response as a Blob, and wrap it in a File named after the job's title (made filename-safe, ending in .mp3, type "audio/mpeg"). Pass that File into the app's EXISTING audio upload function, the same one used when a user picks a file. Don't build a second upload path.
 4. Show progress (Queued → Converting → Uploading). On failure, show the API's error message ("detail" or the job's "error") and let the user retry. On success, the new audio appears wherever uploaded audio normally appears.
 5. Put all the API calls in one small module (e.g. src/lib/ytAudio.ts) so the UI component stays simple.
