@@ -90,4 +90,5 @@ scripts/smoke_test.sh   live YouTube end-to-end check
 Dockerfile              python:3.12-slim + ffmpeg
 .github/workflows/ci.yml  runs pytest on every push
 README.md               API usage
+BOLT_PROMPT.md          copy-paste prompt for integrating from bolt.new
 ```
