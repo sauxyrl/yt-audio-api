@@ -63,6 +63,22 @@ def test_requires_api_key(client):
     assert r.status_code == 401
 
 
+def test_cors_preflight_needs_no_key(client):
+    r = client.options("/v1/jobs", headers={
+        "Origin": "https://demo.example",
+        "Access-Control-Request-Method": "POST",
+        "Access-Control-Request-Headers": "content-type,x-api-key"})
+    assert r.status_code == 200
+    assert r.headers["access-control-allow-origin"] in ("*", "https://demo.example")
+    assert "x-api-key" in r.headers["access-control-allow-headers"].lower()
+
+
+def test_cors_headers_on_responses(client):
+    r = client.get("/v1/jobs/nope", headers={**AUTH, "Origin": "https://demo.example"})
+    assert r.headers["access-control-allow-origin"] == "*"
+    assert "content-disposition" in r.headers["access-control-expose-headers"].lower()
+
+
 def test_rejects_non_youtube_host(client):
     r = client.post("/v1/convert", headers=AUTH, json={"url": "https://example.com/v.mp4"})
     assert r.status_code == 400

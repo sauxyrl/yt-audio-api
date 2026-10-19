@@ -30,6 +30,7 @@ Interactive docs (OpenAPI) are at `http://localhost:8000/docs`.
 | `JOB_TTL_SECONDS` | 3600 | How long finished async files are kept |
 | `WORKERS` | 2 | Concurrent async conversions |
 | `WORK_DIR` | system temp | Scratch space for downloads |
+| `CORS_ORIGINS` | `*` | Comma-separated browser origins allowed to call the API, e.g. `https://myapp.netlify.app` |
 
 ## Plugging it into an editor
 

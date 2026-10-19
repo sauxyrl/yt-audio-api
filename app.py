@@ -28,6 +28,7 @@ from urllib.parse import urlparse
 import httpx
 import yt_dlp
 from fastapi import BackgroundTasks, Depends, FastAPI, Header, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
@@ -38,9 +39,15 @@ WORKERS = int(os.environ.get("WORKERS", 2))
 WORK_DIR = Path(os.environ.get("WORK_DIR", tempfile.gettempdir())) / "yt-audio-api"
 ALLOWED_HOSTS = {"youtube.com", "www.youtube.com", "m.youtube.com",
                  "music.youtube.com", "youtu.be"}
+# Comma-separated browser origins allowed to call the API; "*" allows any.
+CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",")]
 
 WORK_DIR.mkdir(parents=True, exist_ok=True)
 app = FastAPI(title="YouTube to MP3 API", version="1.0.0")
+app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS,
+                   allow_methods=["GET", "POST"],
+                   allow_headers=["Content-Type", "X-API-Key"],
+                   expose_headers=["Content-Disposition"])
 pool = ThreadPoolExecutor(max_workers=WORKERS)
 jobs: dict[str, dict] = {}
 jobs_lock = threading.Lock()
